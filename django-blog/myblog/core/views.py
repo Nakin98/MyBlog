@@ -7,12 +7,16 @@ from django.http import  HttpResponseRedirect
 from django.contrib.auth.models import User
 
 
+
+
 class HomeView(ListView):
     queryset = PostModel.objects.all()
     template_name = 'core/homepage.html'
     context_object_name = "lista_post"
-    
 
+
+def about_view(request):
+    return render(request,'core/about.html')
 
 
 def post(request, pk):
