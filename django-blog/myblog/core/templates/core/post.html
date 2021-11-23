@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block head_title %}{{ block.super }} - Post{% endblock head_title %}
+
+{% block content %}
+<br />
+<br />
+<br />
+<div class="container">
+    <section class="text-center">
+        <h1 class="heading"> {{ post.titolo }}</h1>
+        <h5 class="text-muted"> {{ post.data_creazione|date:"d M Y" }}</h5>
+        <p class="lead text"> {{ post.contenuto }} </p>
+    </section>
+    <br />
+    <br />
+    <hr>
+    {% if comments.count > 1 or comments.count == 0%}
+        <h4 class="text-muted"> {{comments.count}} Commenti</h4>
+    {% else %}
+        <h4 class="text-muted"> {{comments.count}} Commento</h4>
+    {% endif %}
+    <br />
+    <br />
+        {% for comment in comments %}
+            <h5>  <strong>{{ comment.user }} </strong></h5>
+            <p> {{ comment.contenuto_commento }}</p>
+            <p class="text-muted">{{ comment.data|date:"d M Y" }}</p>
+            <hr>
+        {% endfor %}
+    {% if user.is_authenticated %}
+        <h4 class="text-muted" >Aggiungi un commento</h4>
+        <form  method="post">
+            {% csrf_token %}
+            {{ comment_form|crispy }}
+            <button type="submit" class="btn btn-dark">Commenta</button>
+        </form>
+    {% else %}
+        <h4>Vuoi commentare? <a href="{% url 'login' %}">Accedi</a></h4>
+    {% endif %}
+</div>
+
+{% endblock content %}
